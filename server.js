@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./helper/connectDB");
 const path = require("path");
-const seedRoutes = require('./routes/seedRoutes');
 const userRoutes = require('./routes/userRoutes');
 const mongoose = require("mongoose");
 
@@ -22,7 +21,7 @@ if (process.env.NODE_ENV === "production") {
 
 if (process.env.NODE_ENV === "local") {
     app.use(cors({
-        origin: "http://localhost:3000",
+        origin: "http://localhost:5174",
         credentials: true,
     }))
 }
@@ -35,11 +34,20 @@ else {
 const port = process.env.PORT || 5000;
 
 app.use('/api/users', userRoutes);
-app.use('/api/seed', seedRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("Sever running");
 })
+
+app.get("/hello", (req, res) => {
+    res.send("Hello from server");
+})
+
+app.get("/test", (req, res) => {
+    console.log("hello");
+    res.json({ message: "Test route working" });
+});
 
 app.listen(port, () => {
     connectDB();

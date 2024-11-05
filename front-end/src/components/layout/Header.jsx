@@ -4,12 +4,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Menu, MoreVertical } from "lucide-react"
 import { useState } from "react"
 import Sidebar from "./Sidebar"
+import { useAuth, UserButton } from "@clerk/clerk-react"
 
 export default function Header() {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { isSignedIn } = useAuth();
 
     return (
-        <header className="flex items-center justify-between p-4 border-b">
+        <header className="flex items-center justify-between p-4 border-b bg-primary">
             <div className="flex items-center space-x-4">
                 <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                     <SheetTrigger asChild>
@@ -21,10 +23,9 @@ export default function Header() {
                         <Sidebar isMobile={true} />
                     </SheetContent>
                 </Sheet>
-                <Avatar>
-                    <AvatarImage src="/placeholder-avatar.jpg" alt="Your Avatar" />
-                    <AvatarFallback>YA</AvatarFallback>
-                </Avatar>
+                {
+                    isSignedIn && <UserButton />
+                }
                 <h1 className="font-semibold">FlareTalk</h1>
             </div>
             <Button variant="ghost" size="icon">
